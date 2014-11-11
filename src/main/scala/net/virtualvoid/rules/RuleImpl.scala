@@ -1,15 +1,15 @@
 package net.virtualvoid.rules
 
-import scala.reflect.macros.whitebox.Context
+import scala.reflect.macros.Context
 
 object RuleImpl {
-  def concatImpl[U](c: Context)(other: c.Tree)(implicit u: c.WeakTypeTag[U]): c.Tree = {
+  def concatImpl[U](c: Context)(other: c.Expr[Rule[U]])(implicit u: c.WeakTypeTag[U]): c.Expr[Any] = {
     import c.universe._
 
     val tpe =
       if (u.tpe <:< typeOf[Int]) typeOf[String]
       else typeOf[Any]
 
-    q"""null: Rule[$tpe]"""
+    c.Expr(q"""null: Rule[$tpe]""")
   }
 }
